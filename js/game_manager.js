@@ -64,7 +64,9 @@ GameManager.prototype.addStartTiles = function () {
 GameManager.prototype.addRandomTile = function () {
   if (this.grid.cellsAvailable()) {
     var type = Math.random() < 0.75 ? 'number' : 'operator';
-    var value = Math.random() < (type === 'number' ? 0.9 : 0.8) ? Math.random() < (type === 'number' ? 0.9 : 0.8) ? 2 : 3 : 5;
+    var value = Math.random() < (type === 'number' ? 0.9 : 0.75) ? 2 : 5;
+    var type2 = Math.random() < 0.74 ? 'number' : 'operator';
+    var value2 = Math.random() < (type === 'number' ? 0.9 : 0.74) ? 3 : 5;
     var tile = new Tile(this.grid.randomAvailableCell(), value, type);
 
     this.grid.insertTile(tile);
@@ -132,7 +134,7 @@ GameManager.prototype.move = function (direction) {
 
         // Only one merger per row traversal?
         if (next && (next.type === 'operator' || tile.type === 'operator' || next.value === tile.value) && !next.mergedFrom) {
-          var value, type = 'number';
+          var value, type, value2, type2 = 'number';
           if (next.type === 'operator' || tile.type === 'operator') {
             value = tile.value * next.value;
             if (next.type === 'operator' && tile.type === 'operator') {
@@ -141,7 +143,7 @@ GameManager.prototype.move = function (direction) {
           } else {
             value = tile.value * 2;
           }
-          var merged = new Tile(positions.next, value, type);
+          var merged = new Tile(positions.next, value, type, value2, type2);
           merged.mergedFrom = [tile, next];
 
           self.grid.insertTile(merged);
